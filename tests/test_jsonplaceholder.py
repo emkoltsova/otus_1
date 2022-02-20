@@ -44,7 +44,7 @@ def test_post_comments(post_id):
             assert item['postId'] == post_id
 
     else:
-        res == []
+        assert res == []
 
 
 def test_posts_schema():
