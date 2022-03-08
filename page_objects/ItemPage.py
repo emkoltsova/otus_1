@@ -1,7 +1,9 @@
 from selenium.webdriver.common.by import By
 
+from .BasePage import BasePage
 
-class ItemPage:
+
+class ItemPage(BasePage):
     IPHONE_ITEM_PATH = '/index.php?route=product/product&product_id=40'
     ITEM_IMG = (By.CSS_SELECTOR, "img[title='iPhone']")
     ITEM_HEADER = (By.CSS_SELECTOR, "h1")

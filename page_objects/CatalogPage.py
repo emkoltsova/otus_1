@@ -1,10 +1,12 @@
 from selenium.webdriver.common.by import By
 
+from .BasePage import BasePage
 
-class CatalogPage:
+
+class CatalogPage(BasePage):
     DESKTOP_PATH = '/index.php?route=product/category&path=20'
     ITEM_LABEL = (
-    By.CSS_SELECTOR, ".breadcrumb [href='https://demo.opencart.com/index.php?route=product/category&path=20']")
+        By.CSS_SELECTOR, ".breadcrumb [href*='desktops']")
     ITEM_HEADER = (By.CSS_SELECTOR, "h2")
     DESCRIPTION_IMAGE = (By.CSS_SELECTOR, ".col-sm-2 img")
     DESCRIPTION_TEXT = (By.CSS_SELECTOR, ".col-sm-10 p")
