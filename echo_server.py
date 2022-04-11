@@ -44,16 +44,17 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             headers = text.split("\r\n\r\n")[0]
 
             body = '<b>' + request_method + '<br>' + '<b>' + request_source + '<br>' + '<b>' + response_status + '<br>'
-            for item in headers.split('\n'):
+            for item in headers.split('\n')[1:]:
                 body += '<b>' + item + '<br>'
 
-            headers = '\r\n'.join([
+            content_length = f'Content-Length: {len(body)}'
+            headers_resp = '\r\n'.join([
                 status_line,
-                headers
+                content_length
             ])
 
             resp = '\r\n\r\n'.join([
-                headers,
+                headers_resp,
                 body
             ])
             sent_bytes = conn.send(resp.encode('utf-8'))
