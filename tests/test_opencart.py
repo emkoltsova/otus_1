@@ -1,4 +1,5 @@
 import random
+
 import allure
 import pytest
 
@@ -9,15 +10,18 @@ from page_objects.ItemPage import ItemPage
 from page_objects.MainPage import MainPage
 from page_objects.RegisterPage import RegisterPage
 
+
 @allure.description("""Проверка наличия элементов на странице каталога""")
 def test_catalog(browser):
     page = CatalogPage(browser)
     browser.open(CatalogPage.DESKTOP_PATH)
-    page_elements = [CatalogPage.ITEM_LABEL, CatalogPage.ITEM_HEADER, CatalogPage.DESCRIPTION_IMAGE,
+    page_elements = [CatalogPage.ITEM_LABEL,
+                     CatalogPage.ITEM_HEADER, CatalogPage.DESCRIPTION_IMAGE,
                      CatalogPage.DESCRIPTION_TEXT, CatalogPage.REFINE_SEARCH, CatalogPage.LIST_VIEW,
                      CatalogPage.GRID_VIEW]
     for el in page_elements:
         page.verify_element_presence(el)
+
 
 @allure.description("""Проверка наличия элементов на странице регистрации нового пользователя""")
 def test_register_page(browser):
@@ -30,6 +34,7 @@ def test_register_page(browser):
     for el in page_elements:
         page.verify_element_presence(el)
 
+
 @allure.description("""Проверка наличия элементов на главной странице""")
 def test_main_page(browser):
     page = MainPage(browser)
@@ -38,6 +43,7 @@ def test_main_page(browser):
                      MainPage.CURRENCY_PICKER, MainPage.MACBOOK_IMAGE]
     for el in page_elements:
         page.verify_element_presence(el)
+
 
 @allure.description("""Проверка наличия элементов на странице авторизации в раздел админитсратора""")
 def test_admin_login_page(browser):
@@ -48,6 +54,7 @@ def test_admin_login_page(browser):
     for el in page_elements:
         page.verify_element_presence(el)
 
+
 @allure.description("""Проверка наличия элементов на странице товаров""")
 def test_item_page(browser):
     page = ItemPage(browser)
@@ -56,6 +63,7 @@ def test_item_page(browser):
                      ItemPage.DESCRIPTION_TAB, ItemPage.REVIEWS_TAB]
     for el in page_elements:
         page.verify_element_presence(el)
+
 
 @allure.description("""Добавление нового продукта в разделе администратора""")
 def test_add_new_product(browser):
@@ -77,6 +85,7 @@ def test_add_new_product(browser):
     assert 'Success' in page.get_element_text(AdminPage.ALERT_SUCCESS)
     filter_product(browser, product_info['name'])
 
+
 @allure.description("""Удаление продукта в разделе администратора""")
 def test_delete_product(browser):
     browser.open(AdminLoginPage.ADMIN_PATH)
@@ -97,6 +106,7 @@ def test_delete_product(browser):
     page.click_element(AdminPage.DELETE_PRODUCT_BTN)
     page.accept_alert()
     assert 'Success' in page.get_element_text(AdminPage.ALERT_SUCCESS)
+
 
 @allure.description("""Иземенение валюты через выпадающий список""")
 @pytest.mark.parametrize('cur_button, cur_text, cur_sign', [(MainPage.CURRENCY_EURO, '€ Euro', '€'),
@@ -122,7 +132,7 @@ def test_user_register(browser):
     page.fill_form(RegisterPage.FIRST_NAME_FIELD, 'test_first_name')
     page.fill_form(RegisterPage.LAST_NAME_FIELD, 'test_last_name')
     page.fill_form(RegisterPage.EMAIL_FIELD,
-                                    'test_user_' + str(random.randint(1, 10000)) + '@gmail.com')
+                   'test_user_' + str(random.randint(1, 10000)) + '@gmail.com')
     page.fill_form(RegisterPage.PHONE_FIELD, '89997775634')
     page.fill_form(RegisterPage.PASSWORD_FIELD, '1234567890')
     page.fill_form(RegisterPage.PASS_CONFIRM_FIELD, '1234567890')
