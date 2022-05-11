@@ -1,4 +1,5 @@
 import logging
+import os
 
 import pytest
 from selenium import webdriver
@@ -6,9 +7,9 @@ from selenium import webdriver
 
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="chrome")
-    parser.addoption("--url", action="store", default="http://192.168.1.101:8081/")
+    parser.addoption("--url", action="store", default="http://192.168.1.105:8081/")
     parser.addoption("--log_level", action="store", default="DEBUG")
-    parser.addoption("--executor", default="192.168.1.101")
+    parser.addoption("--executor", default="local")
 
 
 @pytest.fixture(scope='module')
@@ -27,10 +28,17 @@ def browser(request):
     logger.setLevel(level=log_level)
     logger.info("===> Test {} started!".format(test_name))
 
-    driver = webdriver.Remote(
-        command_executor=f"http://{executor}:4444/wd/hub",
-        desired_capabilities={"browserName": browser}
-    )
+    if executor == "local":
+        caps = {'goog:chromeOptions': {}}
+
+        driver = webdriver.Chrome(
+            executable_path=f"{os.path.expanduser('~/Downloads/drivers')}/chromedriver", desired_capabilities=caps
+        )
+    else:
+        driver = webdriver.Remote(
+            command_executor=f"http://{executor}:4444/wd/hub",
+            desired_capabilities={"browserName": browser}
+        )
 
     driver.test_name = test_name
     driver.log_level = log_level
