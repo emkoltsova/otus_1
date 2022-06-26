@@ -7,9 +7,10 @@ from selenium import webdriver
 
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="chrome")
-    parser.addoption("--url", action="store", default="http://192.168.1.105:8081/")
+    parser.addoption("--url", action="store", default="http://192.168.1.100:9091/")
     parser.addoption("--log_level", action="store", default="DEBUG")
-    parser.addoption("--executor", default="local")
+    parser.addoption("--executor", default="192.168.1.100")
+    parser.addoption("--bversion", action="store", default="100.0")
 
 
 @pytest.fixture(scope='module')
@@ -18,6 +19,7 @@ def browser(request):
     url = request.config.getoption("--url")
     log_level = request.config.getoption("--log_level")
     executor = request.config.getoption("--executor")
+    version = request.config.getoption("--bversion")
 
     logger = logging.getLogger('driver')
     test_name = request.node.name
@@ -37,7 +39,7 @@ def browser(request):
     else:
         driver = webdriver.Remote(
             command_executor=f"http://{executor}:4444/wd/hub",
-            desired_capabilities={"browserName": browser}
+            desired_capabilities={"browserName": browser, "browserVersion": version}
         )
 
     driver.test_name = test_name
